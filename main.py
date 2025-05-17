@@ -11,18 +11,18 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 app = FastAPI()
 
 class Projeto(BaseModel):
-    titulo: str
-    especificacoes: str
-    prazo: str
+    name: str
+    specifications: str
+    deadline: str
 
 @app.post("/gerar-descricao")
 async def gerar_descricao(projeto: Projeto):
     prompt = f"""
     Gere uma descrição clara e atrativa para um projeto de marketing com base nas informações abaixo:
 
-    Título do projeto: {projeto.titulo}
-    Especificações desejadas: {projeto.especificacoes}
-    Prazo de execução: {projeto.prazo}
+    Título do projeto: {projeto.name}
+    Especificações desejadas: {projeto.specifications}
+    Prazo de execução: {projeto.deadline}
 
     A descrição deve ser objetiva, envolvente e escrita como se estivesse em uma plataforma para freelancers.
     """
