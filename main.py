@@ -18,13 +18,13 @@ class Projeto(BaseModel):
 @app.post("/gerar-descricao")
 async def gerar_descricao(projeto: Projeto):
     prompt = f"""
-    Gere uma descrição clara e atrativa para um projeto de marketing com base nas informações abaixo:
+    Gere uma descrição clara, atrativa e finalizada corretamente, com no máximo 200 caracteres, para um projeto de marketing com base nas informações abaixo:
 
     Título do projeto: {projeto.name}
     Especificações desejadas: {projeto.specifications}
     Prazo de execução: {projeto.deadline}
 
-    A descrição deve ser objetiva, envolvente e escrita como se estivesse em uma plataforma para freelancers.
+    A descrição deve ser objetiva, envolvente e escrita como se estivesse em uma plataforma para freelancers. Não ultrapasse o limite e não deixe a frase incompleta.
     """
 
     response = client.chat.completions.create(
@@ -33,4 +33,5 @@ async def gerar_descricao(projeto: Projeto):
         temperature=0.7
     )
 
-    return {"descricao": response.choices[0].message.content}
+    descricao = response.choices[0].message.content.strip()
+    return {"descricao": descricao}
