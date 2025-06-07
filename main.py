@@ -1,21 +1,41 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import openai
 import os
 from dotenv import load_dotenv
 
+# Carrega variáveis de ambiente
 load_dotenv()
 
+# Inicializa o cliente da OpenAI
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# Inicializa o FastAPI
 app = FastAPI()
 
+# Configuração do CORS
+origins = [
+    "https://markcollab-frontend-pi.vercel.app",  # frontend Vercel
+    "http://localhost:3000"                        # ambiente local
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,            # Domínios permitidos
+    allow_credentials=True,
+    allow_methods=["*"],              # Permite todos os métodos
+    allow_headers=["*"],              # Permite todos os headers
+)
+
+# Schema para entrada
 class Projeto(BaseModel):
     name: str
     specifications: str
     deadline: str
 
-@app.post("/gerar-descricao")
+# Endpoint da IA
+@app.post("/api/ia/gerar-descricao")
 async def gerar_descricao(projeto: Projeto):
     prompt = f"""
     Gere uma descrição clara, atrativa e finalizada corretamente, com no máximo 200 caracteres, para um projeto de marketing com base nas informações abaixo:
