@@ -38,7 +38,7 @@ class Projeto(BaseModel):
 @app.post("/api/ia/gerar-descricao")
 async def gerar_descricao(projeto: Projeto):
     prompt = f"""
-    Gere uma descrição clara, atrativa e finalizada corretamente, com no máximo 200 caracteres, para um projeto que o contratate está postando com base nas informações abaixo:
+    Gere uma descrição clara, atrativa e finalizada corretamente, com no máximo 280 caracteres, para um projeto que o contratate está postando com base nas informações abaixo:
 
     Título do projeto: {projeto.name}
     Especificações desejadas: {projeto.specifications}
